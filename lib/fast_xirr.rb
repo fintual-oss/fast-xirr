@@ -9,7 +9,6 @@ module FastXirr
     
     if result.nan?
       result = _calculate_with_bisection(cashflows_with_timestamps, tol, max_iter)
-      puts "Brent failed, trying bisection" unless result.nan?
     end
 
     return result

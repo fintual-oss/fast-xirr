@@ -16,12 +16,18 @@ FastXirr is a high-performance Ruby gem for calculating the Extended Internal Ra
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'fast_xirr', git: 'https://github.com/fintual/fast_xirr.git'
+gem 'fast_xirr'
 ```
 
 And then execute:
 ```bash
 bundle install
+```
+
+### From CLI
+
+```bash
+gem install fast_xirr
 ```
 
 ## Usage
@@ -60,7 +66,7 @@ result.nan?
 # => true
 ```
 
-Tolerance can be set to a custom value (default is 1e-10), as well as the maximum number of iterations (default is 100000000000000).
+Tolerance can be set to a custom value (default is 1e-7), as well as the maximum number of iterations (default is 1e10).
 
 
 ```ruby
@@ -91,7 +97,7 @@ To build the gem from the source code, follow these steps:
 1. **Clone the Repository**:
 
     ```bash
-    git clone https://github.com/fintual/fast_xirr.git
+    git clone https://github.com/fintual-oss/fast-xirr.git
     cd fast_xirr
     ```
 
@@ -130,5 +136,5 @@ To run the tests, follow these steps:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/fintual/fast_xirr. This project is intended to be a safe, welcoming space for collaboration.
+Bug reports and pull requests are welcome on GitHub at https://github.com/fintual-oss/fast-xirr. This project is intended to be a safe, welcoming space for collaboration.
 
