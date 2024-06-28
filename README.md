@@ -1,6 +1,6 @@
 # FastXirr
 
-FastXirr is a high-performance Ruby gem for calculating the Internal Rate of Return (IRR) and Extended Internal Rate of Return (XIRR). It leverages C under the hood for rapid calculations, making it suitable for performance-critical applications.
+FastXirr is a high-performance Ruby gem for calculating the Extended Internal Rate of Return (XIRR). It leverages C under the hood for rapid calculations, making it suitable for performance-critical applications.
 
 ## Features
 
@@ -40,8 +40,8 @@ cashflows = [
   [-6000, Date.new(1995, 1, 1)]
 ]
 
-result = FastXirr.calculate(cashflows)
-puts "XIRR: #{result[:result]}"
+result = FastXirr.calculate(cashflows: cashflows)
+puts "XIRR: #{result}"
 # => XIRR: 0.22568401743016633
 ```
 
@@ -51,12 +51,12 @@ If it is not possible to find a solution, the method will return `nan`.
 require 'fast_xirr'
 require 'date'
 
-result = FastXirr.calculate([[1000, Date.new(1985, 1, 1)]])
+result = FastXirr.calculate(cashflows: [[1000, Date.new(1985, 1, 1)]])
 
-puts "XIRR: #{result[:result]}"
+puts "XIRR: #{result}"
 # => XIRR: NaN
 
-result[:result].nan?
+result.nan?
 # => true
 ```
 
@@ -73,12 +73,12 @@ cashflows = [
   [-6000, Date.new(1995, 1, 1)]
 ]
 
-result = FastXirr.calculate(cashflows, tol=1e-2, max_iter=100)
-puts "XIRR: #{result[:result]}"
+result = FastXirr.calculate(cashflows: cashflows, tol: 1e-2, max_iter: 100)
+puts "XIRR: #{result}"
 # => XIRR: 0.22305878076614422
 
-result = FastXirr.calculate(cashflows, tol=1e-8, max_iter=2)
-puts "XIRR: #{result[:result]}"
+result = FastXirr.calculate(cashflows: cashflows, tol: 1e-8, max_iter: 2)
+puts "XIRR: #{result}"
 # => XIRR: NaN
 ```
 
@@ -132,6 +132,3 @@ To run the tests, follow these steps:
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/fintual/fast_xirr. This project is intended to be a safe, welcoming space for collaboration.
 
-
-## License
-WIP

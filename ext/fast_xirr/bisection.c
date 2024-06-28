@@ -17,7 +17,7 @@
  *
  * @return The estimated root (XIRR) or NAN if it fails to converge.
  */
-double bisection_method(CashFlow *cashflows, int count, double tol, long max_iter, double low, double high) {
+double bisection_method(CashFlow *cashflows, long count, double tol, long max_iter, double low, double high) {
     double mid, f_low, f_mid, f_high;
 
     // Calculate the NPV at the boundaries of the interval
@@ -65,11 +65,11 @@ double bisection_method(CashFlow *cashflows, int count, double tol, long max_ite
  */
 VALUE calculate_xirr_with_bisection(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VALUE rb_max_iter) {
     // Get the number of cash flows
-    int count = RARRAY_LEN(rb_cashflows);
+    long count = RARRAY_LEN(rb_cashflows);
     CashFlow cashflows[count];
 
     // Convert Ruby cash flows array to C array
-    for (int i = 0; i < count; i++) {
+    for (long i = 0; i < count; i++) {
         VALUE rb_cashflow = rb_ary_entry(rb_cashflows, i);
         cashflows[i].amount = NUM2DBL(rb_ary_entry(rb_cashflow, 0));
         cashflows[i].date = (time_t)NUM2LONG(rb_ary_entry(rb_cashflow, 1));
