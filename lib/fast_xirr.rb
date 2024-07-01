@@ -3,7 +3,7 @@ require 'fast_xirr/fast_xirr'
 module FastXirr
   def self.calculate(cashflows:, tol: 1e-7, max_iter: 1e10)
     cashflows_with_timestamps = cashflows.map do |amount, date|
-      [amount, date.to_time.to_i]
+      [amount, Time.utc(date.year, date.month, date.day).to_i]
     end
     result = _calculate_with_brent(cashflows_with_timestamps, tol, max_iter)
     
