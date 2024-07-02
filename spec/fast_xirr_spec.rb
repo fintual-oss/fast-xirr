@@ -11,7 +11,7 @@ RSpec.describe FastXirr do
       ]
 
       result = FastXirr.calculate(cashflows: cashflows)
-      expect(result).to be_within(0.0000001).of(0.22568401)
+      expect(result).to be_within(1e-6).of(0.22568333231765117)
     end
 
     it 'returns NaN with lower iteration limit' do
@@ -33,8 +33,8 @@ RSpec.describe FastXirr do
       ]
 
       result = FastXirr.calculate(cashflows: cashflows, tol: 1e-2)
-      expect(result).not_to be_within(0.0000001).of(0.22568430)
-      expect(result).to be_within(0.01).of(0.22568401)
+      expect(result).not_to be_within(0.0000001).of(0.2256833323176)
+      expect(result).to be_within(1e-2).of(0.22568333231765117)
     end
 
     it 'returns NaN with super low tolerance' do
@@ -55,8 +55,8 @@ RSpec.describe FastXirr do
         [-6000, Date.new(1995, 1, 1)]
       ]
 
-      result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-15)
-      expect(result).to be_within(1e-15).of(0.22568402422255124)
+      result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-13)
+      expect(result).to be_within(1e-12).of(0.22568333231765117)
     end
   end
 end

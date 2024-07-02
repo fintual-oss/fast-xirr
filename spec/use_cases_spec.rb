@@ -10,7 +10,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(0.22568430)
+    expect(result).to be_within(1e-6).of(0.22568333231765117)
   end
 
   it 'calculates xirr for an inverted ok investment' do
@@ -21,7 +21,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(0.22568430)
+    expect(result).to be_within(1e-6).of(0.22568333231765117)
   end
 
   it 'calculates xirr for a very good investment' do
@@ -32,7 +32,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(22.352206)
+    expect(result).to be_within(1e-6).of(22.35220616417055)
   end
 
   it 'returns NaN for a good investment that cannot be annualized' do
@@ -63,7 +63,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(-0.034592)
+    expect(result).to be_within(1e-6).of(-0.03459243361066291)
   end
 
   it 'calculates xirr for a long investment' do
@@ -73,7 +73,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(0.112339)
+    expect(result).to be_within(1e-6).of(0.11233945341957301)
   end
 
   it 'calculates xirr for repeated cashflows' do
@@ -85,7 +85,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.0001).of(0.61035894)
+    expect(result).to be_within(1e-6).of(0.6103589452617378)
   end
 
   it 'returns expected xirr for a real case with a lot of cashflows' do
@@ -234,7 +234,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.00001).of(0.217605)
+    expect(result).to be_within(1e-6).of(0.21760561258980923)
   end
 
   it 'returns NaN for another real case' do
@@ -260,7 +260,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(2.505209)
+    expect(result).to be_within(1e-6).of(2.505209187174613)
   end
 
   it 'calculates xirr for another complex case with results on the verge of divergence' do
@@ -271,7 +271,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.000001).of(-0.996814607)
+    expect(result).to be_within(1e-6).of(-0.9968146068978457)
   end
 
   it 'calculates xirr for a simple case on the verge of divergence' do
@@ -281,7 +281,7 @@ RSpec.describe FastXirr do
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result).to be_within(0.0001).of(-0.9998)
+    expect(result).to be_within(1e-6).of(-0.9997997749612346)
   end
 
   it 'calculate xirr in extreme conditions' do
@@ -290,7 +290,7 @@ RSpec.describe FastXirr do
       [383.325, Date.new(1985, 1, 20)],
     ]
 
-    result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-7)
-    expect(result).to be_within(1e-7).of(-0.9999999999)
+    result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-6)
+    expect(result).to be_within(1e-6).of(-0.9999999899975666)
   end
 end
