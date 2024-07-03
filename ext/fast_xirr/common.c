@@ -11,13 +11,13 @@
  *
  * @return The calculated NPV.
  */
-double npv(double rate, CashFlow *cashflows, long count, time_t min_date) {
+double npv(double rate, CashFlow *cashflows, long long count, int64_t min_date) {
     double npv_value = 0.0;
 
-    for (long i = 0; i < count; i++) {
+    for (long long i = 0; i < count; i++) {
         // Calculate the number of days from the minimum date to the cash flow date
-        double days = difftime(cashflows[i].date, min_date) / (60 * 60 * 24);
-        
+        double days = (double)(cashflows[i].date - min_date) / (60 * 60 * 24);
+
         // Calculate the discount factor and add the discounted amount to the NPV
         npv_value += cashflows[i].amount / pow(1 + rate, days / 365.0);
     }
@@ -37,13 +37,13 @@ double npv(double rate, CashFlow *cashflows, long count, time_t min_date) {
  *
  * @return 1 if a bracketing interval is found, 0 otherwise.
  */
-int find_bracketing_interval(CashFlow *cashflows, long count, double *low, double *high) {
+int find_bracketing_interval(CashFlow *cashflows, long long count, double *low, double *high) {
     double min_rate = -0.99999999, max_rate = 10.0;
     double step = 0.0001;
-    time_t min_date = cashflows[0].date;
+    int64_t min_date = cashflows[0].date;
 
     // Find the earliest date in the cashflows array
-    for (long i = 1; i < count; i++) {
+    for (long long i = 1; i < count; i++) {
         if (cashflows[i].date < min_date) {
             min_date = cashflows[i].date;
         }
