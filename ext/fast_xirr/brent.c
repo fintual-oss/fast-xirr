@@ -1,5 +1,5 @@
 #include <ruby.h>
-#include <time.h>
+#include <stdint.h>
 #include <math.h>
 #include "brent.h"
 #include "common.h"
@@ -123,8 +123,9 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VA
     for (long long i = 0; i < count; i++) {
         VALUE rb_cashflow = rb_ary_entry(rb_cashflows, i);
         cashflows[i].amount = NUM2DBL(rb_ary_entry(rb_cashflow, 0));
-        cashflows[i].date = (time_t)NUM2LONG(rb_ary_entry(rb_cashflow, 1));
+        cashflows[i].date = (int64_t)NUM2LL(rb_ary_entry(rb_cashflow, 1));
     }
+
 
     // Convert tolerance and max iterations to C types
     double tol = NUM2DBL(rb_tol);
@@ -134,6 +135,7 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VA
 
     // Try Brent's method with a standard bracketing interval
     double low = -0.9999, high = 10.0;
+
     result = brent_method(cashflows, count, tol, max_iter, low, high);
     if (!isnan(result)) {
         return rb_float_new(result);

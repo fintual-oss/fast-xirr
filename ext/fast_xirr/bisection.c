@@ -1,5 +1,5 @@
 #include <ruby.h>
-#include <time.h>
+#include <stdint.h>
 #include <math.h>
 #include "bisection.h"
 #include "common.h"
@@ -72,7 +72,7 @@ VALUE calculate_xirr_with_bisection(VALUE self, VALUE rb_cashflows, VALUE rb_tol
     for (long long i = 0; i < count; i++) {
         VALUE rb_cashflow = rb_ary_entry(rb_cashflows, i);
         cashflows[i].amount = NUM2DBL(rb_ary_entry(rb_cashflow, 0));
-        cashflows[i].date = (time_t)NUM2LONG(rb_ary_entry(rb_cashflow, 1));
+        cashflows[i].date = (int64_t)NUM2LL(rb_ary_entry(rb_cashflow, 1));
     }
 
     // Convert tolerance and max iterations to C types

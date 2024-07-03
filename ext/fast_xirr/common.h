@@ -1,14 +1,14 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <time.h>
+#include <stdint.h>
 
 typedef struct {
     double amount;
-    time_t date;
+    int64_t date;
 } CashFlow;
 
-double npv(double rate, CashFlow *cashflows, long long count, time_t min_date);
+double npv(double rate, CashFlow *cashflows, long long count, int64_t min_date);
 
 int find_bracketing_interval(CashFlow *cashflows, long long count, double *low, double *high);
 
