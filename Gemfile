@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rake'
-gem 'rspec'
-
+group :test, :development do
+  gem 'rake'
+  gem 'rake-compiler'
+  gem 'rspec'
+end
