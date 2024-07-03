@@ -17,7 +17,7 @@
  *
  * @return The estimated root (XIRR) or NAN if it fails to converge.
  */
-double brent_method(CashFlow *cashflows, long count, double tol, long max_iter, double low, double high) {
+double brent_method(CashFlow *cashflows, long long count, double tol, long long max_iter, double low, double high) {
     // Calculate the NPV at the boundaries of the interval
     double fa = npv(low, cashflows, count, cashflows[0].date);
     double fb = npv(high, cashflows, count, cashflows[0].date);
@@ -30,7 +30,7 @@ double brent_method(CashFlow *cashflows, long count, double tol, long max_iter, 
     double c = low, fc = fa, s, d = 0.0, e = 0.0;
 
     // Iteratively apply Brent's method
-    for (long iter = 0; iter < max_iter; iter++) {
+    for (long long iter = 0; iter < max_iter; iter++) {
         if (fb * fc > 0) {
             // Adjust c to ensure that f(b) and f(c) have opposite signs
             c = low;
@@ -116,11 +116,11 @@ double brent_method(CashFlow *cashflows, long count, double tol, long max_iter, 
  */
 VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VALUE rb_max_iter) {
     // Get the number of cash flows
-    long count = RARRAY_LEN(rb_cashflows);
+    long long count = (long long)RARRAY_LEN(rb_cashflows);
     CashFlow cashflows[count];
 
     // Convert Ruby cash flows array to C array
-    for (long i = 0; i < count; i++) {
+    for (long long i = 0; i < count; i++) {
         VALUE rb_cashflow = rb_ary_entry(rb_cashflows, i);
         cashflows[i].amount = NUM2DBL(rb_ary_entry(rb_cashflow, 0));
         cashflows[i].date = (time_t)NUM2LONG(rb_ary_entry(rb_cashflow, 1));
@@ -128,7 +128,7 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VA
 
     // Convert tolerance and max iterations to C types
     double tol = NUM2DBL(rb_tol);
-    long max_iter = NUM2LONG(rb_max_iter);
+    long long max_iter = NUM2LL(rb_max_iter);
 
     double result;
 
