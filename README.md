@@ -107,12 +107,12 @@ To build the gem from the source code, follow these steps:
     gem build fast_xirr.gemspec
     ```
 
-    This will create a `.gem` file in the directory, such as `fast_xirr-1.0.0.gem`.
+    This will create a `.gem` file in the directory, such as `fast_xirr-1.x.x.gem`.
 
 3. **Install the Gem Locally**:
 
     ```bash
-    gem install ./fast_xirr-1.0.0.gem
+    gem install ./fast_xirr*.gem
     ```
 
 ### Testing the Gem
