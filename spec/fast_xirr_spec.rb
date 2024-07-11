@@ -58,5 +58,12 @@ RSpec.describe FastXirr do
       result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-13)
       expect(result).to be_within(1e-12).of(0.22568333231765117)
     end
+
+    it 'returns 0 with an empty array of cash flows' do
+      cashflows = []
+
+      result = FastXirr.calculate(cashflows: cashflows)
+      expect(result).to be_zero
+    end
   end
 end

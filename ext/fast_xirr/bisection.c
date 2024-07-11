@@ -20,6 +20,11 @@
 double bisection_method(CashFlow *cashflows, long long count, double tol, long long max_iter, double low, double high) {
     double mid, f_low, f_mid, f_high;
 
+    //If cashflows are empty, return 0
+    if (count == 0) {
+        return 0.0;
+    }
+
     // Calculate the NPV at the boundaries of the interval
     f_low = npv(low, cashflows, count, cashflows[0].date);
     f_high = npv(high, cashflows, count, cashflows[0].date);

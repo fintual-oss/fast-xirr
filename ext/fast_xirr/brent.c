@@ -18,6 +18,11 @@
  * @return The estimated root (XIRR) or NAN if it fails to converge.
  */
 double brent_method(CashFlow *cashflows, long long count, double tol, long long max_iter, double low, double high) {
+    //If cashflows are empty, return 0
+    if (count == 0) {
+        return 0.0;
+    }
+
     // Calculate the NPV at the boundaries of the interval
     double fa = npv(low, cashflows, count, cashflows[0].date);
     double fb = npv(high, cashflows, count, cashflows[0].date);
