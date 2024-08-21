@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "fast_xirr"
-  spec.version       = "1.0.1"
+  spec.version       = "1.0.2"
   spec.authors       = ["Matias Martini"]
   spec.email         = ["martini@fintual.com"]
 
