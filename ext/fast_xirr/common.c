@@ -66,13 +66,12 @@ int find_bracketing_interval(CashFlow *cashflows, long long count, double *low, 
     }
 
     // Extend the search range if no interval is found within the initial range
-    step = 10.0;
-    for (double rate = max_rate + step; rate <= 10000.0; rate += step) {
+    for (double rate = max_rate; rate <= 1e300; rate *= 1.5) {
         double npv_rate = npv(rate, cashflows, count, min_date);
 
         // Check if the function values at consecutive rates have opposite signs
         if (npv_min_rate * npv_rate < 0) {
-            *low = rate - step;
+            *low = rate / 1.5;
             *high = rate;
             return 1;
         }

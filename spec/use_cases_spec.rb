@@ -35,14 +35,14 @@ RSpec.describe FastXirr do
     expect(result).to be_within(1e-6).of(22.35220616417055)
   end
 
-  it 'returns NaN for a good investment that cannot be annualized' do
+  it 'calculates xirr for an extremely good and unrealistic investment' do
     cashflows = [
       [-1000, Date.new(1985, 1, 1)],
       [6000, Date.new(1985, 1, 2)]
     ]
 
     result = FastXirr.calculate(cashflows: cashflows)
-    expect(result.nan?).to be true
+    expect(result).to be_within(1e-6).of(1.0597571969623571e+284)
   end
 
   it 'returns NaN for all negative cashflows' do
