@@ -293,4 +293,84 @@ RSpec.describe FastXirr do
     result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-6)
     expect(result).to be_within(1e-6).of(-0.9999999899975666)
   end
+
+  it 'calculates expected xirr with default initial brackets and when xirr have multiple results' do
+    cashflows = [
+      [-224291642.5, Date.new(1980, 1, 1)],
+      [-259470950.8, Date.new(1981, 1, 1)],
+      [-396990554.7, Date.new(1982, 1, 1)],
+      [-134976788.6, Date.new(1983, 1, 1)],
+      [-413028973.1, Date.new(1984, 1, 1)],
+      [0, Date.new(1985, 1, 1)],
+      [171774601.6, Date.new(1986, 1, 1)],
+      [175210093.6, Date.new(1987, 1, 1)],
+      [178714295.5, Date.new(1988, 1, 1)],
+      [182288581.4, Date.new(1989, 1, 1)],
+      [185934353, Date.new(1990, 1, 1)],
+      [189653040.1, Date.new(1991, 1, 1)],
+      [193446100.9, Date.new(1992, 1, 1)],
+      [197315022.9, Date.new(1993, 1, 1)],
+      [201261323.3, Date.new(1994, 1, 1)],
+      [205286549.8, Date.new(1995, 1, 1)],
+      [209392280.8, Date.new(1996, 1, 1)],
+      [213580126.4, Date.new(1997, 1, 1)],
+      [217851728.9, Date.new(1998, 1, 1)],
+      [222208763.5, Date.new(1999, 1, 1)],
+      [70921057.8, Date.new(2000, 1, 1)],
+      [72339479, Date.new(2001, 1, 1)],
+      [73786268.6, Date.new(2002, 1, 1)],
+      [75261993.9, Date.new(2003, 1, 1)],
+      [76767233.8, Date.new(2004, 1, 1)],
+      [78302578.5, Date.new(2005, 1, 1)],
+      [79868630.1, Date.new(2006, 1, 1)],
+      [81466002.7, Date.new(2007, 1, 1)],
+      [83095322.7, Date.new(2008, 1, 1)],
+      [84757229.2, Date.new(2009, 1, 1)],
+      [86452373.8, Date.new(2010, 1, 1)],
+      [-34820484.1, Date.new(2011, 1, 1)]
+    ]
+
+    result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-6, initial_bracket: [-0.999, 1.0])
+    expect(result).to be_within(1e-6).of(-0.7111929106775536)
+  end
+
+  it 'calculates expected xirr with non-default initial brackets and when xirr have multiple results' do
+    cashflows = [
+      [-224291642.5, Date.new(1980, 1, 1)],
+      [-259470950.8, Date.new(1981, 1, 1)],
+      [-396990554.7, Date.new(1982, 1, 1)],
+      [-134976788.6, Date.new(1983, 1, 1)],
+      [-413028973.1, Date.new(1984, 1, 1)],
+      [0, Date.new(1985, 1, 1)],
+      [171774601.6, Date.new(1986, 1, 1)],
+      [175210093.6, Date.new(1987, 1, 1)],
+      [178714295.5, Date.new(1988, 1, 1)],
+      [182288581.4, Date.new(1989, 1, 1)],
+      [185934353, Date.new(1990, 1, 1)],
+      [189653040.1, Date.new(1991, 1, 1)],
+      [193446100.9, Date.new(1992, 1, 1)],
+      [197315022.9, Date.new(1993, 1, 1)],
+      [201261323.3, Date.new(1994, 1, 1)],
+      [205286549.8, Date.new(1995, 1, 1)],
+      [209392280.8, Date.new(1996, 1, 1)],
+      [213580126.4, Date.new(1997, 1, 1)],
+      [217851728.9, Date.new(1998, 1, 1)],
+      [222208763.5, Date.new(1999, 1, 1)],
+      [70921057.8, Date.new(2000, 1, 1)],
+      [72339479, Date.new(2001, 1, 1)],
+      [73786268.6, Date.new(2002, 1, 1)],
+      [75261993.9, Date.new(2003, 1, 1)],
+      [76767233.8, Date.new(2004, 1, 1)],
+      [78302578.5, Date.new(2005, 1, 1)],
+      [79868630.1, Date.new(2006, 1, 1)],
+      [81466002.7, Date.new(2007, 1, 1)],
+      [83095322.7, Date.new(2008, 1, 1)],
+      [84757229.2, Date.new(2009, 1, 1)],
+      [86452373.8, Date.new(2010, 1, 1)],
+      [-34820484.1, Date.new(2011, 1, 1)]
+    ]
+
+    result = FastXirr.calculate(cashflows: cashflows, max_iter: 1e10, tol: 1e-6)
+    expect(result).to be_within(1e-6).of(0.07847712563567992)
+  end
 end
