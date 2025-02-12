@@ -66,7 +66,7 @@ result.nan?
 # => true
 ```
 
-Tolerance can be set to a custom value (default is 1e-7), as well as the maximum number of iterations (default is 1e10).
+Tolerance can be set to a custom value (default is 1e-7), as well as the maximum number of iterations (default is 1e10). You can also specify the initial bracket interval for Brent's method (default is [-0.3, 10.0]) to help the algorithm converge in specific ranges. If the algorith doesn't converge, it will expand the brackets to [0.999, 100.0].
 
 
 ```ruby
@@ -86,6 +86,14 @@ puts "XIRR: #{result}"
 result = FastXirr.calculate(cashflows: cashflows, tol: 1e-8, max_iter: 2)
 puts "XIRR: #{result}"
 # => XIRR: NaN
+
+# You can also specify the initial bracket (search interval) for Brent's method
+result = FastXirr.calculate(
+  cashflows: cashflows,
+  initial_bracket: [-0.5, 5.0]
+)
+puts "XIRR: #{result}"
+# => XIRR: 0.22568333743016633
 ```
 
 ## Build and test
