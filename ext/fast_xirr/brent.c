@@ -55,7 +55,7 @@ double brent_method(CashFlow *cashflows, long long count, double tol, long long 
         // Tolerance calculation for convergence check
         double tol1 = 2 * tol * fabs(high) + 0.5 * tol;
         double m = 0.5 * (c - high);
-        
+
         // Check for convergence
         if (fabs(m) <= tol1 || fb == 0.0) {
             return high;
@@ -92,11 +92,11 @@ double brent_method(CashFlow *cashflows, long long count, double tol, long long 
             d = m;
             e = m;
         }
-        
+
         // Update bounds
         low = high;
         fa = fb;
-        
+
         // Update the new high value
         if (fabs(d) > tol1) {
             high += d;
@@ -105,7 +105,7 @@ double brent_method(CashFlow *cashflows, long long count, double tol, long long 
         }
         fb = npv(high, cashflows, count, cashflows[0].date);
     }
-    
+
     return NAN; // Failed to converge
 }
 
@@ -116,10 +116,12 @@ double brent_method(CashFlow *cashflows, long long count, double tol, long long 
  * @param rb_cashflows Ruby array of cash flows.
  * @param rb_tol Ruby float for tolerance.
  * @param rb_max_iter Ruby integer for maximum iterations.
+ * @param rb_brackets Ruby array with [low, high] bounds for search interval, or nil for defaults.
+ *                  Default interval is [-0.3, 10.0].
  *
  * @return Ruby float with the calculated XIRR.
  */
-VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VALUE rb_max_iter) {
+VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VALUE rb_max_iter, VALUE rb_brackets) {
     // Get the number of cash flows
     long long count = (long long)RARRAY_LEN(rb_cashflows);
     CashFlow cashflows[count];
@@ -131,15 +133,22 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VA
         cashflows[i].date = (int64_t)NUM2LL(rb_ary_entry(rb_cashflow, 1));
     }
 
-
     // Convert tolerance and max iterations to C types
     double tol = NUM2DBL(rb_tol);
     long long max_iter = NUM2LL(rb_max_iter);
 
     double result;
+    double low = -0.3, high = 10.0;
 
-    // Try Brent's method with a standard bracketing interval
-    double low = -0.9999, high = 10.0;
+    // Use provided brackets if they exist
+    if (!NIL_P(rb_brackets)) {
+        Check_Type(rb_brackets, T_ARRAY);
+        if (RARRAY_LEN(rb_brackets) != 2) {
+            rb_raise(rb_eArgError, "Bracket array must contain exactly 2 elements");
+        }
+        low = NUM2DBL(rb_ary_entry(rb_brackets, 0));
+        high = NUM2DBL(rb_ary_entry(rb_brackets, 1));
+    }
 
     result = brent_method(cashflows, count, tol, max_iter, low, high);
     if (!isnan(result)) {
@@ -147,7 +156,7 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VA
     }
 
     // If the standard interval fails, try to find a better bracketing interval
-    low = -0.9999999; high = 10.0;
+    low = -0.9999999; high = 100.0;
     if (find_bracketing_interval(cashflows, count, &low, &high)) {
         result = brent_method(cashflows, count, tol, max_iter, low, high);
         return rb_float_new(result);
