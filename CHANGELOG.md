@@ -1,4 +1,5 @@
-## Unreleased
+## 1.1.0
+! IMPORTANT: This version modifies default values. While not introducing breaking changes, it may produce different results compared to the previous version.
 
 - Added: New optional `initial_bracket` parameter allows customizing the search interval for Brent's method. This enables users to guide the algorithm towards specific rate ranges or help convergence in challenging scenarios.
 - Change: Default Brent's method search initial interval changed from [0.999, 10.0] to [0.3, 10.0]. This improves convergence in typical financial scenarios where multiple solutions exist.
