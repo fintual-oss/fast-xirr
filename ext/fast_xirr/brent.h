@@ -3,7 +3,7 @@
 
 #include <ruby.h>
 
-VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol, VALUE rb_max_iter, VALUE rb_brackets);
+VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol,
+                                VALUE rb_max_iter, VALUE rb_brackets);
 
 #endif
-
