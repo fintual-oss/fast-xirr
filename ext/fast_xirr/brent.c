@@ -127,14 +127,19 @@ double brent_method(CashFlow *cashflows, long long count, double tol,
 VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol,
                                 VALUE rb_max_iter, VALUE rb_brackets) {
   // Get the number of cash flows
-  long long count = (long long)RARRAY_LEN(rb_cashflows);
-  CashFlow cashflows[count];
+  long long total_count = (long long)RARRAY_LEN(rb_cashflows);
+  CashFlow cashflows[total_count];
+  long long filtered_count = 0;
 
-  // Convert Ruby cash flows array to C array
-  for (long long i = 0; i < count; i++) {
+  // Convert Ruby cash flows array to C array, filtering out zero amounts
+  for (long long i = 0; i < total_count; i++) {
     VALUE rb_cashflow = rb_ary_entry(rb_cashflows, i);
-    cashflows[i].amount = NUM2DBL(rb_ary_entry(rb_cashflow, 0));
-    cashflows[i].date = (int64_t)NUM2LL(rb_ary_entry(rb_cashflow, 1));
+    double amount = NUM2DBL(rb_ary_entry(rb_cashflow, 0));
+    if (amount != 0.0) {
+      cashflows[filtered_count].amount = amount;
+      cashflows[filtered_count].date = (int64_t)NUM2LL(rb_ary_entry(rb_cashflow, 1));
+      filtered_count++;
+    }
   }
 
   // Convert tolerance and max iterations to C types
@@ -154,7 +159,7 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol,
     high = NUM2DBL(rb_ary_entry(rb_brackets, 1));
   }
 
-  result = brent_method(cashflows, count, tol, max_iter, low, high);
+  result = brent_method(cashflows, filtered_count, tol, max_iter, low, high);
   if (!isnan(result)) {
     return rb_float_new(result);
   }
@@ -162,8 +167,8 @@ VALUE calculate_xirr_with_brent(VALUE self, VALUE rb_cashflows, VALUE rb_tol,
   // If the standard interval fails, try to find a better bracketing interval
   low = -0.9999999;
   high = 100.0;
-  if (find_bracketing_interval(cashflows, count, &low, &high)) {
-    result = brent_method(cashflows, count, tol, max_iter, low, high);
+  if (find_bracketing_interval(cashflows, filtered_count, &low, &high)) {
+    result = brent_method(cashflows, filtered_count, tol, max_iter, low, high);
     return rb_float_new(result);
   }
 
