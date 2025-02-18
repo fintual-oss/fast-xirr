@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fixed: Calculate xirr now returns 0.0 for arrays containing only zero-amount cashflows, instead of returning the initial guess.
+
 ## 1.1.0
 ! IMPORTANT: This version modifies default values. While not introducing breaking changes, it may produce different results compared to the previous version.
 
